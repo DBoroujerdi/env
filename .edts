@@ -1,0 +1,4 @@
+:name "env"
+:node-sname "env"
+:erlang-cookie "env"
+:start-command "erl +P 5000000 +K true -setcookie env -pa ebin -s env -sname env"

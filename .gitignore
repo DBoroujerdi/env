@@ -1,0 +1,4 @@
+*.plt
+ebin/
+*.d
+logs/
