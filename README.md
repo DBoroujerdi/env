@@ -18,8 +18,8 @@ Often, when building and using Docker containers, we like to override internal c
 This can be replace with the following.
 
 ```erlang
-    string() = env:get_string('REMOTE_HOST'),
-    integer() = env:get_integer('REMOTE_PORT'),
+    string()|undefined = env:get_string('REMOTE_HOST'),
+    integer()|undefined = env:get_integer('REMOTE_PORT'),
 ```
 
 An assumption has been made that you will always prefer an os environment variable first, then from the application context. If you want to control where variables are sourced from, gproc should be used. This API has prioritised simplicity over functionality.
