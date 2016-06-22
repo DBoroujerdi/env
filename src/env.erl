@@ -2,12 +2,12 @@
 
 -export([start/0]).
 
--export([get/1,
-         get/2,
-         get_integer/1,
+-export([get/2,
+         get/3,
          get_integer/2,
-         get_string/1,
-         get_string/2]).
+         get_integer/3,
+         get_string/2,
+         get_string/3]).
 
 start() ->
     application:ensure_all_started(?MODULE).
@@ -21,33 +21,33 @@ start() ->
 
 -type result() :: value() | undefined | {error, term()}.
 
--spec get_string(name()) -> result().
-get_string(Name) when is_atom(Name) ->
-    get_string(Name, undefined).
+-spec get_string(atom(), name()) -> result().
+get_string(App, Name) when is_atom(Name) ->
+    get_string(App, Name, undefined).
 
--spec get_string(name(), any()) -> result().
-get_string(Name, Default) when is_atom(Name) ->
-    env_cast:to_string(get(Name, Default)).
+-spec get_string(atom(), name(), any()) -> result().
+get_string(App, Name, Default) when is_atom(Name) ->
+    env_cast:to_string(get(App, Name, Default)).
 
--spec get_integer(name()) -> result().
-get_integer(Name) when is_atom(Name) ->
-    get_integer(Name, undefined).
+-spec get_integer(atom(), name()) -> result().
+get_integer(App, Name) when is_atom(Name) ->
+    get_integer(App, Name, undefined).
 
--spec get_integer(name(), any()) -> result().
-get_integer(Name, Default) when is_atom(Name) ->
-    env_cast:to_integer(?MODULE:get(Name, Default)).
+-spec get_integer(atom(), name(), any()) -> result().
+get_integer(App, Name, Default) when is_atom(Name) ->
+    env_cast:to_integer(?MODULE:get(App, Name, Default)).
 
--spec get(name()) -> result().
-get(Name) when is_atom(Name) ->
-    get(Name, undefined).
+-spec get(atom(), name()) -> result().
+get(App, Name) when is_atom(Name) ->
+    get(App, Name, undefined).
 
--spec get(name(), any()) -> result().
-get(Name, Default) when is_atom(Name) ->
+-spec get(atom(), name(), any()) -> result().
+get(App, Name, Default) when is_atom(Name) ->
     case cache_lookup(Name) of
         {ok, Value} ->
             Value;
         _ ->
-            lookup(Name, Default)
+            lookup(App, Name, Default)
     end.
 
 %%------------------------------------------------------------------------------
@@ -63,20 +63,20 @@ cache_lookup(Name) ->
             not_found
     end.
 
--spec lookup(name(), any()) -> result().
-lookup(Name, Default) ->
-    case do_lookup(Name) of
+-spec lookup(atom(), name(), any()) -> result().
+lookup(App, Name, Default) ->
+    case do_lookup(App, Name) of
         {ok, Value} ->
             cache_save(Name, Value);
         _ ->
             Default
     end.
 
--spec do_lookup(name()) -> result().
-do_lookup(Name) ->
+-spec do_lookup(atom(), name()) -> result().
+do_lookup(App, Name) ->
     case os:getenv(atom_to_list(Name)) of
         false ->
-            application:get_env(application:get_application(), Name);
+            application:get_env(App, Name);
         Value ->
             {ok, Value}
     end.

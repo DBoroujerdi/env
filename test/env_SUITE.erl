@@ -33,50 +33,50 @@ init_per_suite(Config) ->
 get_caching_from_os_test(_Config) ->
     ok = set_os_var("greeting", "Hello, World"),
 
-    ?assertEqual("Hello, World", env:get(greeting, [os])),
+    ?assertEqual("Hello, World", env:get(app_name, greeting)),
 
     %% change it
     ok = set_os_var("greeting", "Not 'Hello, World'"),
 
     %% is value still the same in the cache?
-    ?assertEqual("Hello, World", env:get(greeting, [os])).
+    ?assertEqual("Hello, World", env:get(app_name, greeting)).
 
 get_integer_caching_from_os_test(_Config) ->
     ok = set_os_var("some_port", "8080"),
 
-    ?assertEqual(8080, env:get_integer(some_port)),
+    ?assertEqual(8080, env:get_integer(app_name, some_port)),
 
     %% change it
     ok = set_os_var("some_port", "8081"),
 
-    ?assertEqual(8080, env:get_integer(some_port)).
+    ?assertEqual(8080, env:get_integer(app_name, some_port)).
 
 get_string_caching_from_os_test(_Config) ->
     ok = set_os_var("some_host", "localhost"),
 
-    ?assertEqual("localhost", env:get_string(some_host)),
+    ?assertEqual("localhost", env:get_string(app_name, some_host)),
 
     %% change it
     ok = set_os_var("some_host", "not_localhost"),
 
-    ?assertEqual("localhost", env:get_string(some_host)).
+    ?assertEqual("localhost", env:get_string(app_name, some_host)).
 
 get_integer_caching_from_app_test(_Config) ->
-    ok = set_app_var(another_host, 8080),
+    ok = set_app_var(app_name, another_host, 8080),
 
-    ?assertEqual(8080, env:get_integer(another_host)),
+    ?assertEqual(8080, env:get_integer(app_name, another_host)),
 
     %% change it
-    ok = set_app_var(another_host, 8081),
+    ok = set_app_var(app_name, another_host, 8081),
 
-    ?assertEqual(8080, env:get_integer(another_host)).
+    ?assertEqual(8080, env:get_integer(app_name, another_host)).
 
 get_env_source_preference_test(_Config) ->
     ok = set_os_var("integer_test", "4321"),
-    ok = set_app_var(integer_test, 1234),
+    ok = set_app_var(app_name, integer_test, 1234),
 
     %% should prefer os source
-    ?assertEqual(4321, env:get_integer(integer_test)).
+    ?assertEqual(4321, env:get_integer(app_name, integer_test)).
 
 %%------------------------------------------------------------------------------
 %% private
@@ -90,5 +90,5 @@ set_os_var(Name, Value) ->
             {error, os_var_not_set}
     end.
 
-set_app_var(Name, Value) ->
-    application:set_env(undefined, Name, Value).
+set_app_var(App, Name, Value) ->
+    application:set_env(App, Name, Value).
