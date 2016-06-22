@@ -1,9 +1,21 @@
 ENV
 ===
 
-Environment Variable Util
+Environment lookup and caching utility, primarily aimed at those apps deployed within docker containers.
 
-Often, when building and using Docker containers, we like to override internal config via environment variables. In practice, this requires the use of 'application' and 'os' which have different API's. Gproc can be used to hide this but what if you don't want to depend on the whole of gproc just to use one corner of it?
+## What is it?
+
+Often, when building and using Docker containers, we like to override internal config via environment variables. In practice, this requires the use of ``` application ``` and  ``` os ``` which have different API's. Gproc's ``` gproc:get_env ``` can be used to hide this but you might not want to depend on the whole of gproc, which does many things, to use just one corner of it, although it is very good.
+
+
+### Benefits over gproc:get_env?
+
+With gproc you'll still have to convert types. Ports, for instance, are returned as strings for, requiring their conversion, whereas when looking up from env you will get back whatever the type is in there (*.config or *.app.src files). Type conversions inside env therefore creates some safety.
+
+Consitent API regardless of the source of the env, as shown below.
+
+
+## What is it like?
 
 ```erlang
     %% os
@@ -21,8 +33,6 @@ This can be replace with the following.
     string()|undefined = env:get_string(app_name, 'REMOTE_HOST'),
     integer()|undefined = env:get_integer(app_name, 'REMOTE_PORT'),
 ```
-
-An assumption has been made that you will always prefer an os environment variable first, then from the application context. If you want to control where variables are sourced from, gproc should be used. This API has prioritised simplicity over functionality.
 
 ### caching
 
