@@ -1,7 +1,7 @@
 ENV
 ===
 
-Environment lookup and caching utility, primarily aimed at those apps deployed within docker containers.
+Environment lookup and caching utility, primarily aimed at apps deployed with dockers.
 
 ## What is it?
 
