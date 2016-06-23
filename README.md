@@ -10,7 +10,7 @@ Often, when building and using Docker containers, we like to override internal c
 
 ### Benefits over gproc:get_env?
 
-With gproc you'll still have to convert types. Ports, for instance, are returned as strings for, requiring their conversion, whereas when looking up from env you will get back whatever the type is in there (*.config or *.app.src files). Type conversions inside env therefore creates some safety.
+With gproc you'll still have to convert types. Ports, for instance, are returned as strings, requiring their conversion, whereas when looking up from *.app.src or *.config you will get back whatever the type is in there. Type conversions inside env therefore creates safety, you get back the type you asked for.
 
 Consitent API regardless of the source of the env, as shown below.
 
