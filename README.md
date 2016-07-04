@@ -34,6 +34,6 @@ This can be replace with the following.
     integer()|undefined = env:get_integer(app_name, 'REMOTE_PORT'),
 ```
 
-### caching
+### Caching
 
 Once a variable has been successfully obtained from either source, it is cached in ETS, then for any subsequent calls it is obtained from ETS. So there isn't really any need to store the variables outside in your application. If an application or processs that requires a variables dies, it can simply read it again when it restarts.
