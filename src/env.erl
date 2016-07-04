@@ -1,5 +1,10 @@
 -module(env).
 
+-behaviour(application).
+
+-export([start/2,
+         stop/1]).
+
 -export([start/0]).
 
 -export([get/2,
@@ -9,11 +14,25 @@
          get_string/2,
          get_string/3]).
 
-start() ->
-    application:ensure_all_started(?MODULE).
+%%------------------------------------------------------------------------------
+%% callbacks
+%%------------------------------------------------------------------------------
+
+start(_Type, _Args) ->
+    _ = init_cache(),
+
+    env_sup:start_link().
+
+stop(_State) ->
+    ok.
 
 %%------------------------------------------------------------------------------
 %% public
+%%------------------------------------------------------------------------------
+
+start() ->
+    application:ensure_all_started(?MODULE).
+
 %%------------------------------------------------------------------------------
 
 -type name()   :: atom().
@@ -85,3 +104,6 @@ do_lookup(App, Name) ->
 cache_save(Name, Value) ->
     true = ets:insert(?MODULE, {Name, Value}),
     Value.
+
+init_cache() ->
+    ets:new(?MODULE, [public, set, named_table]).
