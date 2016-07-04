@@ -10,17 +10,7 @@
 %%------------------------------------------------------------------------------
 
 all() ->
-    test_functions(proplists:get_value(exports, ?MODULE:module_info())).
-
-test_functions(Funs) ->
-    lists:foldl(fun({Fun, _}, Acc) ->
-                        [Fun|Acc]
-                end, [], lists:filter(is_test_fun(), Funs)).
-
-is_test_fun() ->
-    fun({Fun, _}) ->
-            lists:suffix("_test", atom_to_list(Fun))
-    end.
+    ct_common:all(?MODULE).
 
 init_per_suite(Config) ->
     {ok, _} = env:start(),
