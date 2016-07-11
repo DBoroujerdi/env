@@ -1,18 +1,18 @@
-ENV
+Env
 ===
 
 Environment lookup and caching utility, primarily aimed at apps deployed with docker.
 
 ## What is it?
 
-Often, when building and using Docker containers, we like to override internal config via environment variables. In practice, this requires the use of ``` application ``` and  ``` os ``` which have different API's. Gproc's ``` gproc:get_env ``` can be used to hide this but you might not want to depend on the whole of gproc, which does many things, to use just one corner of it, although it is very good.
+Often, when building and using Docker containers, we like to override internal config via environment variables. In practice, this requires the use of ``` application ``` and  ``` os ``` which have different API's. Gproc's ``` gproc:get_env ``` can be used to hide this but you might not want to depend on the whole of gproc, which does many things, to use just one corner of it, despite it being brilliant.
 
 
 ### Benefits over gproc:get_env?
 
-With gproc you'll still have to convert types. Ports, for instance, are returned as strings, requiring their conversion, whereas when looking up from *.app.src or *.config you will get back whatever the type is in there. Type conversions inside env therefore creates safety, you get back the type you asked for.
+With gproc you'll still have to convert types. Ports, for instance, are returned as strings, requiring their conversion, whereas when looking up from *.app.src or *.config you will get back whatever the type is in there. Env has a few of those common type conversions inside so env will try its best to give back the type explicitly asked for.
 
-Consitent API regardless of the source of the env, as shown below.
+Consistent API regardless of the source of the env, as shown below.
 
 
 ## What is it like?
