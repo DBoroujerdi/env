@@ -3,16 +3,10 @@ Env
 
 Environment lookup and caching utility, primarily aimed at apps deployed with docker.
 
+
 ## What is it?
 
-Often, when building and using Docker containers, we like to override internal config via environment variables. In practice, this requires the use of ``` application ``` and  ``` os ``` which have different API's. Gproc's ``` gproc:get_env ``` can be used to hide this but you might not want to depend on the whole of gproc, which does many things, to use just one corner of it, despite it being brilliant.
-
-
-### Benefits over gproc:get_env?
-
-With gproc you'll still have to convert types. Ports, for instance, are returned as strings, requiring their conversion, whereas when looking up from *.app.src or *.config you will get back whatever the type is in there. Env has a few of those common type conversions inside so env will try its best to give back the type explicitly asked for.
-
-Consistent API regardless of the source of the env, as shown below.
+Often when building and using Docker containers we like to override internal config via environment variables. In practice this requires juggling the use of both the ``` application ``` and  ``` os ``` modules which have different API's.
 
 
 ## What is it like?
@@ -34,6 +28,7 @@ This can be replace with the following.
     integer()|undefined = env:get_integer(app_name, 'REMOTE_PORT'),
 ```
 
+
 ### Caching
 
-Once a variable has been successfully obtained from either source, it is cached in ETS, then for any subsequent calls it is obtained from ETS. So there isn't really any need to store the variables outside in your application. If an application or processs that requires a variables dies, it can simply read it again when it restarts.
+Once a variable has been successfully obtained from either source it is cached in ETS, then for any subsequent calls it is obtained from ETS. So there isn't really any need to store the variables outside in your application. If an application or processs that requires a variable dies, it can simply read it again when it restarts.
